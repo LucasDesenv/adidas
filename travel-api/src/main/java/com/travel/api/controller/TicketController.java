@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by lusouza on 20/07/18.
@@ -32,8 +34,11 @@ public class TicketController {
     @GetMapping("/search")
     public ResponseEntity<List<TicketDTO>> get(@RequestParam(name = "originCity", required = false) String originCity,
                                                @RequestParam(name = "destinyCity", required = false) String destinyCity) throws Exception {
-//        List<TicketDTO> tickets = ticketService.searchByCity(Optional.ofNullable(originCity), Optional.ofNullable(destinyCity));
-//        return ResponseEntity.created(new URI(String.format("/v1/api/ticket/%s", ticket.getId()))).body(new TicketDTO(ticket));
-        return null;
+        List<TicketDTO> tickets = ticketService
+                .searchByCity(Optional.ofNullable(originCity), Optional.ofNullable(destinyCity))
+                .stream()
+                .map(TicketDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(tickets);
     }
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,18 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<? extends TicketData> searchByCity(Optional<String> originCity, Optional<String> destinyCity) {
-        return null;
+        if (originCity.isPresent() && destinyCity.isPresent()){
+            return ticketRepository.findByOriginCityAndDestinyCity(originCity.get(),destinyCity.get());
+        }
+
+        if (destinyCity.isPresent()){
+            return ticketRepository.findByDestinyCity(destinyCity.get());
+        }
+
+        if (originCity.isPresent()){
+            return ticketRepository.findByOriginCity(originCity.get());
+        }
+
+        return Collections.emptyList();
     }
 }

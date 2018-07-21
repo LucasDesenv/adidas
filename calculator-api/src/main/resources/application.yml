@@ -5,3 +5,26 @@ server:
 spring:
   application:
     name: calculator-api
+  jackson:
+      serialization:
+        write_dates_as_timestamps: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+feign:
+  client:
+    default:
+      connect-timeout: 10000
+      read-timeout: 10000

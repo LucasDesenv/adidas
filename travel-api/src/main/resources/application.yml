@@ -3,6 +3,14 @@
 spring:
   application:
     name: travel-api
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 server:
-  servlet:
-    context-path: /travel
+  port: 7111

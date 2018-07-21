@@ -24,7 +24,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(DataNotFoundException.class)
-    public @ResponseBody ExceptionInfo dataNotFound(Exception e) {
+    public @ResponseBody ExceptionInfo dataNotFound(DataNotFoundException e) {
         LOGGER.warn(e.getMessage(), e);
         return new ExceptionInfo(e.getMessage(), "Data not found.");
     }

@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -94,5 +97,60 @@ public class TicketControllerTest {
         final ResponseEntity<String> ticketResponseEntity = restTemplate.postForEntity("/v1/api/ticket", ticket, String.class);
         assertThat(ticketResponseEntity.getStatusCodeValue()).isEqualTo(400);
         assertThat(ticketResponseEntity.getBody()).contains("Departure time cannot be empty.");
+    }
+
+    @Test
+    public void mustSearchByOringAndDestinyCity(){
+        TicketDTO ticket = new TicketDTO();
+        ticket.setOriginCity("Madrid");
+        ticket.setDestinyCity("Barcelona");
+        ticket.setDepartureTime(LocalTime.of(10,30));
+        ticket.setArriveTime(LocalTime.of(7,30));
+
+        restTemplate.postForEntity("/v1/api/ticket", ticket , TicketDTO.class);
+        ResponseEntity<List<TicketDTO>> exchange = restTemplate.exchange("/v1/api/ticket/search?originCity=Madrid&destinyCity=Barcelona", HttpMethod.GET, null, new ParameterizedTypeReference<List<TicketDTO>>() {
+        });
+        List<TicketDTO> body = exchange.getBody();
+        assertThat(body).hasSize(1);
+        assertThat(body).allMatch(t -> t.getOriginCity().equals(ticket.getOriginCity()));
+        assertThat(body).allMatch(t -> t.getDestinyCity().equals(ticket.getDestinyCity()));
+    }
+
+    @Test
+    public void mustSearchByOriginCity(){
+        TicketDTO ticket = new TicketDTO();
+        ticket.setOriginCity("Florida");
+        ticket.setDestinyCity("Boston");
+        ticket.setDepartureTime(LocalTime.of(10,30));
+        ticket.setArriveTime(LocalTime.of(7,30));
+
+        restTemplate.postForEntity("/v1/api/ticket", ticket , TicketDTO.class);
+        ResponseEntity<List<TicketDTO>> exchange = restTemplate.exchange("/v1/api/ticket/search?originCity=Florida", HttpMethod.GET, null, new ParameterizedTypeReference<List<TicketDTO>>() {
+        });
+        List<TicketDTO> body = exchange.getBody();
+        assertThat(body).hasSize(1);
+        assertThat(body).allMatch(t -> t.getOriginCity().equals(ticket.getOriginCity()));
+    }
+
+    @Test
+    public void mustSearchByDestinyCity(){
+        TicketDTO ticket = new TicketDTO();
+        ticket.setOriginCity("Berlin");
+        ticket.setDestinyCity("Frankfurt");
+        ticket.setDepartureTime(LocalTime.of(10,30));
+        ticket.setArriveTime(LocalTime.of(7,30));
+
+        restTemplate.postForEntity("/v1/api/ticket", ticket , TicketDTO.class);
+        ResponseEntity<List<TicketDTO>> exchange = restTemplate.exchange("/v1/api/ticket/search?destinyCity=Frankfurt", HttpMethod.GET, null, new ParameterizedTypeReference<List<TicketDTO>>() {
+        });
+        List<TicketDTO> body = exchange.getBody();
+        assertThat(body).hasSize(1);
+        assertThat(body).allMatch(t -> t.getDestinyCity().equals(ticket.getDestinyCity()));
+    }
+
+    @Test
+    public void mustReturn404WhenSearchingAndNotFound(){
+        ResponseEntity<String> exchange = restTemplate.exchange("/v1/api/ticket/search?destinyCity=NOWHERE", HttpMethod.GET, null, String.class);
+        assertThat(exchange.getStatusCode().value()).isEqualTo(404);
     }
 }

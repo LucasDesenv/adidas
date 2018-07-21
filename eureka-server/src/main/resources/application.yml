@@ -1,0 +1,16 @@
+#spring boot properties
+#Fri Jul 20 19:51:59 EDT 2018
+spring:
+  application:
+    name: eureka-server
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    prefer-ip-address: false
+    hostname: localhost
