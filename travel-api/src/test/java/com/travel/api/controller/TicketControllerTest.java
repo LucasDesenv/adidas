@@ -149,8 +149,10 @@ public class TicketControllerTest {
     }
 
     @Test
-    public void mustReturn404WhenSearchingAndNotFound(){
-        ResponseEntity<String> exchange = restTemplate.exchange("/v1/api/ticket/search?destinyCity=NOWHERE", HttpMethod.GET, null, String.class);
-        assertThat(exchange.getStatusCode().value()).isEqualTo(404);
+    public void mustReturnEmptyWhenSearchingAndNotFound(){
+        ResponseEntity<List<TicketDTO>> exchange = restTemplate.exchange("/v1/api/ticket/search?destinyCity=NOWHERE", HttpMethod.GET, null, new ParameterizedTypeReference<List<TicketDTO>>() {
+        });
+        List<TicketDTO> body = exchange.getBody();
+        assertThat(body).isEmpty();
     }
 }

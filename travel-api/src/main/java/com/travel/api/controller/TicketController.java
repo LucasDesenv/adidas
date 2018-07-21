@@ -25,6 +25,11 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
+    @GetMapping("/ping")
+    public String ping(){
+        return "pong";
+    }
+
     @PostMapping
     public ResponseEntity<TicketDTO> save(@RequestBody TicketDTO ticketDTO) throws Exception {
         final TicketData ticket = ticketService.save(ticketDTO);

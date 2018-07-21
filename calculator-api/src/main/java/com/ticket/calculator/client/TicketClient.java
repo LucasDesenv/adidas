@@ -12,7 +12,7 @@ import java.util.List;
  */
 @FeignClient(name = "travel-api")
 public interface TicketClient {
-    @GetMapping("/ping")
+    @GetMapping("/v1/api/ticket/search/ping")
     String ping();
     @GetMapping("/v1/api/ticket/search")
     List<TicketDTO> searchByOriginAndDestinyCity(@RequestParam(name = "originCity", required = false) String originCity,
