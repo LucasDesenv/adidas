@@ -32,7 +32,7 @@ public class TicketController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<TicketDTO>> get(@RequestParam(name = "originCity", required = false) String originCity,
+    public ResponseEntity<List<TicketDTO>> search(@RequestParam(name = "originCity", required = false) String originCity,
                                                @RequestParam(name = "destinyCity", required = false) String destinyCity) throws Exception {
         List<TicketDTO> tickets = ticketService
                 .searchByCity(Optional.ofNullable(originCity), Optional.ofNullable(destinyCity))

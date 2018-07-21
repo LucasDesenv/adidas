@@ -1,17 +1,21 @@
 package com.ticket.calculator.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 
 /**
  * Created by lusouza on 20/07/18.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TicketDTO implements Serializable{
     private String originCity;
     private String destinyCity;
     private LocalTime departureTime;
     private LocalTime arriveTime;
     private String id;
+    private TicketDTO connection;
 
     public TicketDTO() {
     }
@@ -50,5 +54,13 @@ public class TicketDTO implements Serializable{
 
     public void setArriveTime(LocalTime arriveTime) {
         this.arriveTime = arriveTime;
+    }
+
+    public TicketDTO getConnection() {
+        return connection;
+    }
+
+    public void setConnection(TicketDTO connection) {
+        this.connection = connection;
     }
 }
