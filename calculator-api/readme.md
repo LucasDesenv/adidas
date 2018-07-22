@@ -1,6 +1,4 @@
-#Some setup information :).
-
-**CLIENT APPLICATION**
+# **CLIENT APPLICATION**
 
 This Application is the Client that will access the Travel Microservice in order 
 to calculate the shortest way from a city to another one.
