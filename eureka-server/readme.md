@@ -13,7 +13,8 @@ and discovery other microservices.
     
 **STEPS**
 
-* 1 - Just run the class EurekaServerApplicationBoot.
+* 1 - Just run the class `EurekaServerApplicationBoot.java`.
+* 2 - Available at: http://localhost:8761/
 
 **REFERENCES**
 
