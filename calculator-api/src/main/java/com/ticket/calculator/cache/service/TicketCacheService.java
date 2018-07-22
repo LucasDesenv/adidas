@@ -1,6 +1,6 @@
 package com.ticket.calculator.cache.service;
 
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface TicketCacheService {
 
-    void save(TicketDTO ticketDTO);
+    void save(Ticket ticket);
 
-    List<TicketDTO> searchByOriginAndDestinyCity(Optional<String> originCity, Optional<String> destinyCity);
+    List<Ticket> searchByOriginAndDestinyCity(Optional<String> originCity, Optional<String> destinyCity);
 }

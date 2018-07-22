@@ -1,6 +1,6 @@
 package com.ticket.calculator.client;
 
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +16,6 @@ public interface TicketClient {
     @GetMapping("/v1/api/ticket/ping")
     String ping();
     @GetMapping("/v1/api/ticket/search")
-    List<TicketDTO> searchByOriginAndDestinyCity(@RequestParam(name = "originCity", required = false) String originCity,
-                                                                 @RequestParam(name = "destinyCity", required = false) String destinyCity);
+    List<Ticket> searchByOriginAndDestinyCity(@RequestParam(name = "originCity", required = false) String originCity,
+                                              @RequestParam(name = "destinyCity", required = false) String destinyCity);
 }

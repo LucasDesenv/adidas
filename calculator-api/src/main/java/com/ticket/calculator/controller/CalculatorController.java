@@ -1,7 +1,7 @@
 package com.ticket.calculator.controller;
 
 import com.ticket.calculator.client.TicketClient;
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 import com.ticket.calculator.service.CalculatorService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ public class CalculatorController {
     }
 
     @GetMapping("/shortest")
-    public TicketDTO calculateTheShortestWay(@RequestParam(name = "fromCity") String fromCity,
-                                                           @RequestParam(name = "toCity") String toCity){
+    public Ticket calculateTheShortestWay(@RequestParam(name = "fromCity") String fromCity,
+                                          @RequestParam(name = "toCity") String toCity){
         return calculatorService.calculateShortestWay(fromCity,toCity);
     }
 }

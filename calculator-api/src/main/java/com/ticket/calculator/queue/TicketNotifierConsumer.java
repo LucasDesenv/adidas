@@ -2,7 +2,7 @@ package com.ticket.calculator.queue;
 
 import com.google.gson.Gson;
 import com.ticket.calculator.cache.service.TicketCacheService;
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -30,7 +30,7 @@ public class TicketNotifierConsumer {
                     exchange = @Exchange(value = "ticket_events", durable = "True")
             ))
     public void processMessage(org.springframework.amqp.core.Message message, @Payload String ticketJson){
-        TicketDTO ticket = new Gson().fromJson(ticketJson, TicketDTO.class);
+        Ticket ticket = new Gson().fromJson(ticketJson, Ticket.class);
         LOGGER.info(String.format("Consuming the message to cache the ticket received: %s", ticket.getId()));
         ticketCacheService.save(ticket);
     }

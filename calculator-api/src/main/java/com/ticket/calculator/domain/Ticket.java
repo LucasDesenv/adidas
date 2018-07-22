@@ -1,4 +1,4 @@
-package com.ticket.calculator.dto;
+package com.ticket.calculator.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
@@ -13,7 +13,7 @@ import java.time.LocalTime;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @RedisHash("Ticket")
-public class TicketDTO implements Serializable{
+public class Ticket implements Serializable, Comparable<Ticket>{
     @Indexed
     private String originCity;
     @Indexed
@@ -22,19 +22,19 @@ public class TicketDTO implements Serializable{
     private LocalTime arriveTime;
     @Id
     private String id;
-    private TicketDTO connection;
+    private Ticket connection;
 
-    public TicketDTO() {
+    public Ticket() {
     }
 
-    public TicketDTO(TicketDTO ticketDTO) {
-        this.originCity = ticketDTO.getOriginCity();
-        this.destinyCity = ticketDTO.getDestinyCity();
-        this.departureTime = ticketDTO.getDepartureTime();
-        this.arriveTime = ticketDTO.getArriveTime();
-        this.id = ticketDTO.getId();
-        if (ticketDTO.getConnection() != null)
-            this.connection = new TicketDTO(ticketDTO.getConnection());
+    public Ticket(Ticket ticket) {
+        this.originCity = ticket.getOriginCity();
+        this.destinyCity = ticket.getDestinyCity();
+        this.departureTime = ticket.getDepartureTime();
+        this.arriveTime = ticket.getArriveTime();
+        this.id = ticket.getId();
+        if (ticket.getConnection() != null)
+            this.connection = new Ticket(ticket.getConnection());
     }
 
     public String getOriginCity() {
@@ -73,12 +73,25 @@ public class TicketDTO implements Serializable{
         this.arriveTime = arriveTime;
     }
 
-    public TicketDTO getConnection() {
+    public Ticket getConnection() {
         return connection;
     }
 
-    public void setConnection(TicketDTO connection) {
+    public void setConnection(Ticket connection) {
         this.connection = connection;
+    }
+
+    public Ticket copy() {
+        return new Ticket(this);
+    }
+
+    public boolean hasConnection(){
+        return connection != null;
+    }
+
+    @Override
+    public int compareTo(Ticket o2) {
+        return this.getDepartureTime().compareTo(o2.getDepartureTime());
     }
 
     @Override
@@ -86,12 +99,12 @@ public class TicketDTO implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TicketDTO ticketDTO = (TicketDTO) o;
+        Ticket ticket = (Ticket) o;
 
-        if (!originCity.equals(ticketDTO.originCity)) return false;
-        if (!destinyCity.equals(ticketDTO.destinyCity)) return false;
-        if (!departureTime.equals(ticketDTO.departureTime)) return false;
-        return arriveTime.equals(ticketDTO.arriveTime);
+        if (!originCity.equals(ticket.originCity)) return false;
+        if (!destinyCity.equals(ticket.destinyCity)) return false;
+        if (!departureTime.equals(ticket.departureTime)) return false;
+        return arriveTime.equals(ticket.arriveTime);
     }
 
     @Override
@@ -103,7 +116,16 @@ public class TicketDTO implements Serializable{
         return result;
     }
 
-    public TicketDTO copy() {
-        return new TicketDTO(this);
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Ticket{");
+        sb.append("originCity='").append(originCity).append('\'');
+        sb.append(", destinyCity='").append(destinyCity).append('\'');
+        sb.append(", departureTime=").append(departureTime);
+        sb.append(", arriveTime=").append(arriveTime);
+        sb.append(", id='").append(id).append('\'');
+        sb.append(", connection=").append(connection);
+        sb.append('}');
+        return sb.toString();
     }
 }

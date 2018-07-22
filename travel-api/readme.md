@@ -37,8 +37,10 @@ to search for the ways from a city to another one.
 
 * 4 - It will be available at `http://localhost:7111/swagger-ui.html`
 
-**TODO in future**
+**TODO in future (things to get better)**
 * Change Rabbit to Kafka for **topic** usage to notify.
+* Change MongoDB to MongoDB + Elasticsearch (for searching).
+* Add oAuth2 for security.
 
 
 **REFERENCES**

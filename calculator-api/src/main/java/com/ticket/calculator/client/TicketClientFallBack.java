@@ -1,7 +1,7 @@
 package com.ticket.calculator.client;
 
 import com.ticket.calculator.cache.service.TicketCacheService;
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class TicketClientFallBack implements TicketClient{
     }
 
     @Override
-    public List<TicketDTO> searchByOriginAndDestinyCity(String originCity, String destinyCity) {
+    public List<Ticket> searchByOriginAndDestinyCity(String originCity, String destinyCity) {
         return ticketCacheService.searchByOriginAndDestinyCity(Optional.ofNullable(originCity), Optional.ofNullable(destinyCity));
     }
 }

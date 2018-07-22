@@ -1,7 +1,7 @@
 package com.ticket.calculator.cache.service;
 
 import com.ticket.calculator.cache.repository.TicketCacheRepository;
-import com.ticket.calculator.dto.TicketDTO;
+import com.ticket.calculator.domain.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ public class TicketCacheServiceImpl implements TicketCacheService{
     private TicketCacheRepository ticketCacheRepository;
 
     @Override
-    public void save(TicketDTO ticketDTO) {
-        ticketCacheRepository.save(ticketDTO);
+    public void save(Ticket ticket) {
+        ticketCacheRepository.save(ticket);
     }
 
     @Override
-    public List<TicketDTO> searchByOriginAndDestinyCity(Optional<String> originCity, Optional<String> destinyCity) {
+    public List<Ticket> searchByOriginAndDestinyCity(Optional<String> originCity, Optional<String> destinyCity) {
         if (originCity.isPresent() && destinyCity.isPresent()){
             return ticketCacheRepository.findByOriginCityAndDestinyCity(originCity.get(), destinyCity.get());
         }
