@@ -63,4 +63,26 @@ public class TicketDTO implements Serializable{
     public void setConnection(TicketDTO connection) {
         this.connection = connection;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TicketDTO ticketDTO = (TicketDTO) o;
+
+        if (!originCity.equals(ticketDTO.originCity)) return false;
+        if (!destinyCity.equals(ticketDTO.destinyCity)) return false;
+        if (!departureTime.equals(ticketDTO.departureTime)) return false;
+        return arriveTime.equals(ticketDTO.arriveTime);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = originCity.hashCode();
+        result = 31 * result + destinyCity.hashCode();
+        result = 31 * result + departureTime.hashCode();
+        result = 31 * result + arriveTime.hashCode();
+        return result;
+    }
 }

@@ -6,6 +6,7 @@ import com.ticket.calculator.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,31 +23,36 @@ public class CalculatorServiceImpl implements CalculatorService {
         final List<TicketDTO> nonStoppingTicket = getNonStoppingTicket(fromCity, toCity);
 
         if (!nonStoppingTicket.isEmpty()){
-            return nonStoppingTicket.stream().sorted(Comparator.comparing(TicketDTO::getArriveTime)).findFirst().get();
+            return nonStoppingTicket.stream().sorted(Comparator.comparing(TicketDTO::getDepartureTime)).findFirst().get();
         }
 
         return getWithConnection(fromCity, toCity);
     }
 
     private TicketDTO getWithConnection(String fromCity, String toCity) {
-        final List<TicketDTO> ticketsToTheDestiny = getTicketsToDestiny(toCity);
-        if (ticketsToTheDestiny.isEmpty()){
+        final List<TicketDTO> connections = getTicketsToDestiny(toCity);
+        if (connections.isEmpty()){
             throw new DataNotFoundException("No tickets found for this destiny.");
         }
 
-        ticketsToTheDestiny.forEach(destiny -> {
-            final List<TicketDTO> ticketsToTheConnectionOriginCity = getNonStoppingTicket(fromCity, destiny.getOriginCity());
-            if (!ticketsToTheConnectionOriginCity.isEmpty()){
-                ticketsToTheConnectionOriginCity.sort(Comparator.comparing(TicketDTO::getArriveTime));
-                final TicketDTO shortestConnection = ticketsToTheConnectionOriginCity.stream().findFirst().get();
-                destiny.setConnection(shortestConnection);
+        final List<TicketDTO> ticketsWithConnections = new ArrayList<>();
+
+        connections.forEach(connection -> {
+            final List<TicketDTO> mainTickets = getNonStoppingTicket(fromCity, connection.getOriginCity());
+            if (!mainTickets.isEmpty()){
+                mainTickets.sort(Comparator.comparing(TicketDTO::getDepartureTime));
+                final TicketDTO shortesFirstTicket = mainTickets.stream().findFirst().get();
+                shortesFirstTicket.setConnection(connection);
+                ticketsWithConnections.add(shortesFirstTicket);
             }
         });
 
-        final TicketDTO shortestConnection = ticketsToTheDestiny.stream().filter(t -> t.getConnection() != null)
-                .sorted(Comparator.comparing(t -> t.getConnection().getArriveTime()))
+        final TicketDTO shortestConnection = ticketsWithConnections.stream().filter(t -> t.getConnection() != null)
+                .sorted(Comparator.comparing(t -> t.getDepartureTime()))
+                .sorted(Comparator.comparing(t -> t.getConnection().getDepartureTime()))
                 .findFirst()
                 .orElse(null);
+
         if (shortestConnection != null){
             return shortestConnection;
         }

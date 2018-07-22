@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by lusouza on 20/07/18.
  */
-@FeignClient(name = "travel-api")
+@FeignClient(name = "travel-api", fallback = TicketClientFallBack.class)
 public interface TicketClient {
     @GetMapping("/v1/api/ticket/search/ping")
     String ping();

@@ -3,3 +3,6 @@
 spring:
   application:
     name: calculator-api
+eureka:
+  client:
+    enabled: false
