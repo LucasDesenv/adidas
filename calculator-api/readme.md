@@ -1,4 +1,4 @@
-# **CLIENT APPLICATION**
+# **Calculator Client API**
 
 This Application is the Client that will access the Travel Microservice in order 
 to calculate the shortest way from a city to another one.
@@ -13,7 +13,7 @@ to calculate the shortest way from a city to another one.
 * SWAGGER
     * Used for API documentation.  
     
-**STEPS**
+**STEPS** (Eureka server should be started before this)
 
 * 1 - Baixe o Redis para Windows: https://github.com/rgl/redis/downloads versão redis-2.4.6-setup-64-bit.exe — Redis 2.4.6 Windows Setup (64-bit)
 

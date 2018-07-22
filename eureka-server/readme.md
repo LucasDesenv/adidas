@@ -1,4 +1,4 @@
-# **REGISTRY APPLICATION**
+# **Service Discovery API**
 
 This Application is the Eureka Server to registry the microservices. 
 It works as a Service Discovery where clients can register themselves 
