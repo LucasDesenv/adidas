@@ -43,11 +43,28 @@ public class CalculatorServiceTest {
                 searchByOriginAndDestinyCity("Barcelona", "Madrid")).
                 thenReturn(Arrays.asList(ticket));
         TicketDTO ticketDTO = calculatorService.calculateShortestWay("Barcelona", "Madrid");
-        assertThat(ticketDTO.getOriginCity()).isEqualTo(ticket.getOriginCity());
-        assertThat(ticketDTO.getDestinyCity()).isEqualTo(ticket.getDestinyCity());
-        assertThat(ticketDTO.getDepartureTime()).isEqualTo(ticket.getDepartureTime());
-        assertThat(ticketDTO.getArriveTime()).isEqualTo(ticket.getArriveTime());
-        assertThat(ticketDTO.getConnection()).isNull();
+        assertThat(ticketDTO).isEqualTo(ticket);
+    }
+
+    @Test
+    public void shouldReturnTheNonStoppingWayBasedOnShortestTime(){
+        TicketDTO ticket = new TicketDTO();
+        ticket.setOriginCity("Barcelona");
+        ticket.setDestinyCity("Madrid");
+        ticket.setDepartureTime(LocalTime.of(10,30));
+        ticket.setArriveTime(LocalTime.of(12,30));
+
+        TicketDTO ticketLong = new TicketDTO();
+        ticketLong.setOriginCity("Barcelona");
+        ticketLong.setDestinyCity("Madrid");
+        ticketLong.setDepartureTime(LocalTime.of(13,30));
+        ticketLong.setArriveTime(LocalTime.of(15,30));
+
+        when(ticketClient.
+                searchByOriginAndDestinyCity("Barcelona", "Madrid")).
+                thenReturn(Arrays.asList(ticket));
+        TicketDTO ticketDTO = calculatorService.calculateShortestWay("Barcelona", "Madrid");
+        assertThat(ticketDTO).isEqualTo(ticket);
     }
 
     @Test
@@ -76,8 +93,8 @@ public class CalculatorServiceTest {
                 thenReturn(Arrays.asList(ticket));
 
         TicketDTO ticketDTO = calculatorService.calculateShortestWay("Criciuma", "Sao Paulo");
-        assertThat(ticketDTO).isEqualToComparingFieldByField(ticket);
-        assertThat(ticketDTO.getConnection()).isEqualToComparingFieldByField(ticket2);
+        assertThat(ticketDTO).isEqualTo(ticket);
+        assertThat(ticketDTO.getConnection()).isEqualTo(ticket2);
     }
 
     @Test
@@ -130,7 +147,7 @@ public class CalculatorServiceTest {
     }
 
     @Test
-    public void shouldReturnWithThreeConnections(){
+    public void shouldReturnLongFly(){
         TicketDTO ticket = new TicketDTO();
         ticket.setOriginCity("Criciuma");
         ticket.setDestinyCity("Florianopolis");
@@ -139,21 +156,15 @@ public class CalculatorServiceTest {
 
         TicketDTO ticket2 = new TicketDTO();
         ticket2.setOriginCity("Florianopolis");
-        ticket2.setDestinyCity("Sao Paulo");
+        ticket2.setDestinyCity("Rio de Janeiro");
         ticket2.setDepartureTime(LocalTime.of(10,30));
         ticket2.setArriveTime(LocalTime.of(7,30));
 
         TicketDTO ticket3 = new TicketDTO();
-        ticket3.setOriginCity("Sao Paulo");
-        ticket3.setDestinyCity("Rio de Janeiro");
+        ticket3.setOriginCity("Rio de Janeiro");
+        ticket3.setDestinyCity("Salvador");
         ticket3.setDepartureTime(LocalTime.of(7,0));
         ticket3.setArriveTime(LocalTime.of(18,0));
-
-        TicketDTO ticket4 = new TicketDTO();
-        ticket4.setOriginCity("Rio de Janeiro");
-        ticket4.setDestinyCity("Salvador");
-        ticket4.setDepartureTime(LocalTime.of(7,0));
-        ticket4.setArriveTime(LocalTime.of(18,0));
 
 
         when(ticketClient.
@@ -161,22 +172,75 @@ public class CalculatorServiceTest {
                 thenReturn(Collections.emptyList());
         when(ticketClient.
                 searchByOriginAndDestinyCity(null, "Salvador")).
-                thenReturn(Arrays.asList(ticket4));
-        when(ticketClient.
-                searchByOriginAndDestinyCity(null, "Rio de Janeiro")).
                 thenReturn(Arrays.asList(ticket3));
         when(ticketClient.
-                searchByOriginAndDestinyCity(null, "Sao Paulo")).
+                searchByOriginAndDestinyCity(null, "Rio de Janeiro")).
                 thenReturn(Arrays.asList(ticket2));
         when(ticketClient.
-                searchByOriginAndDestinyCity(null, "Florianopolis")).
+                searchByOriginAndDestinyCity("Criciuma", "Florianopolis")).
                 thenReturn(Arrays.asList(ticket));
 
         TicketDTO ticketDTO = calculatorService.calculateShortestWay("Criciuma", "Salvador");
-        assertThat(ticketDTO).isEqualToComparingFieldByField(ticket);
-        assertThat(ticketDTO.getConnection()).isEqualToComparingFieldByField(ticket3);
-        assertThat(ticketDTO.getConnection().getConnection()).isEqualToComparingFieldByField(ticket2);
-        assertThat(ticketDTO.getConnection().getConnection().getConnection()).isEqualToComparingFieldByField(ticket3);
-        assertThat(ticketDTO.getConnection().getConnection().getConnection().getConnection()).isEqualToComparingFieldByField(ticket4);
+        assertThat(ticketDTO).isEqualTo(ticket);
+        assertThat(ticketDTO.getConnection()).isEqualTo(ticket2);
+        assertThat(ticketDTO.getConnection().getConnection()).isEqualTo(ticket3);
+    }
+
+    @Test
+    public void shouldReturnLongFlyBasedOnShortestTime(){
+        TicketDTO ticket = new TicketDTO();
+        ticket.setOriginCity("Criciuma");
+        ticket.setDestinyCity("Florianopolis");
+        ticket.setDepartureTime(LocalTime.of(7,30));
+        ticket.setArriveTime(LocalTime.of(8,30));
+
+        TicketDTO ticket1Long = new TicketDTO();
+        ticket1Long.setOriginCity("Criciuma");
+        ticket1Long.setDestinyCity("Florianopolis");
+        ticket1Long.setDepartureTime(LocalTime.of(9,0));
+        ticket1Long.setArriveTime(LocalTime.of(8,0));
+
+        TicketDTO ticket2 = new TicketDTO();
+        ticket2.setOriginCity("Florianopolis");
+        ticket2.setDestinyCity("Rio de Janeiro");
+        ticket2.setDepartureTime(LocalTime.of(10,30));
+        ticket2.setArriveTime(LocalTime.of(11,30));
+
+        TicketDTO ticket2Long = new TicketDTO();
+        ticket2Long.setOriginCity("Florianopolis");
+        ticket2Long.setDestinyCity("Rio de Janeiro");
+        ticket2Long.setDepartureTime(LocalTime.of(19,30));
+        ticket2Long.setArriveTime(LocalTime.of(20,30));
+
+        TicketDTO ticket3 = new TicketDTO();
+        ticket3.setOriginCity("Rio de Janeiro");
+        ticket3.setDestinyCity("Salvador");
+        ticket3.setDepartureTime(LocalTime.of(14,0));
+        ticket3.setArriveTime(LocalTime.of(16,0));
+
+        TicketDTO ticket3Long = new TicketDTO();
+        ticket3Long.setOriginCity("Rio de Janeiro");
+        ticket3Long.setDestinyCity("Salvador");
+        ticket3Long.setDepartureTime(LocalTime.of(15,0));
+        ticket3Long.setArriveTime(LocalTime.of(17,0));
+
+
+        when(ticketClient.
+                searchByOriginAndDestinyCity("Criciuma", "Salvador")).
+                thenReturn(Collections.emptyList());
+        when(ticketClient.
+                searchByOriginAndDestinyCity(null, "Salvador")).
+                thenReturn(Arrays.asList(ticket3, ticket3Long));
+        when(ticketClient.
+                searchByOriginAndDestinyCity(null, "Rio de Janeiro")).
+                thenReturn(Arrays.asList(ticket2, ticket2Long));
+        when(ticketClient.
+                searchByOriginAndDestinyCity("Criciuma", "Florianopolis")).
+                thenReturn(Arrays.asList(ticket, ticket1Long));
+
+        TicketDTO ticketDTO = calculatorService.calculateShortestWay("Criciuma", "Salvador");
+        assertThat(ticketDTO).isEqualTo(ticket);
+        assertThat(ticketDTO.getConnection()).isEqualTo(ticket2);
+        assertThat(ticketDTO.getConnection().getConnection()).isEqualTo(ticket3);
     }
 }

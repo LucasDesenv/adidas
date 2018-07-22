@@ -20,6 +20,16 @@ public class TicketDTO implements Serializable{
     public TicketDTO() {
     }
 
+    public TicketDTO(TicketDTO ticketDTO) {
+        this.originCity = ticketDTO.getOriginCity();
+        this.destinyCity = ticketDTO.getDestinyCity();
+        this.departureTime = ticketDTO.getDepartureTime();
+        this.arriveTime = ticketDTO.getArriveTime();
+        this.id = ticketDTO.getId();
+        if (ticketDTO.getConnection() != null)
+            this.connection = new TicketDTO(ticketDTO.getConnection());
+    }
+
     public String getOriginCity() {
         return originCity;
     }
@@ -84,5 +94,9 @@ public class TicketDTO implements Serializable{
         result = 31 * result + departureTime.hashCode();
         result = 31 * result + arriveTime.hashCode();
         return result;
+    }
+
+    public TicketDTO copy() {
+        return new TicketDTO(this);
     }
 }
