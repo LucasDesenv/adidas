@@ -10,6 +10,15 @@ to calculate the shortest way from a city to another one.
 * Feign.
     * It is a declarative web service client. It makes writing web service clients easier.
     The great thing here is that Feign integrates Ribbon and Eureka to provide a load balanced http client.
+* Ribbon
+    * For Load Balance. It's encapsulated in Feign.
+* Hystix
+    * For Fallback. It's encapsulated in Feign.
+* Redis
+    * Use for caching the tickets.
+* RabbitMQ
+    * Use to consume the queue `ticket_events.notifier` to save the data in cache. 
+    So when the app is offline, the Hystrix will go to the caching.      
 * SWAGGER
     * Used for API documentation.  
     
@@ -23,7 +32,9 @@ to calculate the shortest way from a city to another one.
 
 * 2 - **RabbitMQ** should be up. Read the **readme of travel-api**.
 
-* 3 - Run the clas `CalculatorApplicationBoot.java`
+* 3 - Run the class `CalculatorApplicationBoot.java`
+
+* 4 - It will be available at `http://localhost:8087/swagger-ui.html`
 
 
 
@@ -36,8 +47,9 @@ to calculate the shortest way from a city to another one.
   * https://spring.io/guides/gs/circuit-breaker/
   * https://github.com/spring-guides/gs-circuit-breaker/tree/master/complete
 
-* **FEIGN (Hystrix + Ribbon)**
+* **FEIGN**
     * https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html
+    * https://github.com/spring-cloud/spring-cloud-netflix/issues/1471
 
 * **SWAGGER**
   * http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api

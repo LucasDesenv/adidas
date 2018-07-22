@@ -33,7 +33,9 @@ to search for the ways from a city to another one.
     * To check messages: _rabbitmqadmin get queue=notifier requeue=true count=10_
     * To list all queues: _rabbitmqadmin list queues_
     * To list all exchanges: _rabbitmqadmin list exchanges_
-* 3 - Run the application by executing **TravelApplicationBoot**.
+* 3 - Run the class `TravelApplicationBoot.java`.
+
+* 4 - It will be available at `http://localhost:7111/swagger-ui.html`
 
 **TODO in future**
 * Change Rabbit to Kafka for **topic** usage to notify.
@@ -54,5 +56,3 @@ to search for the ways from a city to another one.
     * https://stackoverflow.com/questions/23050120/rabbitmq-command-doesnt-exist
     * https://www.rabbitmq.com/tutorials/tutorial-two-python.html
     * https://www.rabbitmq.com/management-cli.html
-
-
