@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/v1/api/calculator", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class CalculatorController {
 
+    //Feign will resolve it in runtime.
     @Autowired
     private TicketClient ticketClient;
     @Autowired

@@ -26,6 +26,8 @@ endpoints:
   health:
     sensitive: false
 feign:
+  hystrix:
+    enabled: true
   client:
     default:
       connect-timeout: 10000

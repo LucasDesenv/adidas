@@ -1,6 +1,9 @@
 package com.ticket.calculator.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -9,11 +12,15 @@ import java.time.LocalTime;
  * Created by lusouza on 20/07/18.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@RedisHash("Ticket")
 public class TicketDTO implements Serializable{
+    @Indexed
     private String originCity;
+    @Indexed
     private String destinyCity;
     private LocalTime departureTime;
     private LocalTime arriveTime;
+    @Id
     private String id;
     private TicketDTO connection;
 

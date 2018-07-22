@@ -3,6 +3,7 @@ package com.travel.api.service;
 import com.travel.api.domain.Ticket;
 import com.travel.api.domain.TicketData;
 import com.travel.api.exception.BadDataException;
+import com.travel.api.queue.TicketNotifierProducer;
 import com.travel.api.repository.TicketRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private TicketNotifierProducer ticketNotifierProducer;
 
     @Override
     public TicketData save(TicketData ticketData) throws BadDataException {
@@ -29,6 +32,7 @@ public class TicketServiceImpl implements TicketService {
             Ticket ticket = new Ticket(ticketData);
             ticket.prepareToSave();
             Ticket ticketSaved = ticketRepository.save(ticket);
+            ticketNotifierProducer.notify(ticketSaved);
             return ticketSaved;
         }catch (IllegalArgumentException e){
             LOGGER.warn(e.getMessage(), e);
