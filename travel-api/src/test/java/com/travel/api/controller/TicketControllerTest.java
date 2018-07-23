@@ -1,10 +1,13 @@
 package com.travel.api.controller;
 
+import com.travel.api.domain.Ticket;
 import com.travel.api.dto.TicketDTO;
+import com.travel.api.queue.TicketNotifierProducer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,6 +19,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by lusouza on 19/07/18.
@@ -26,6 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TicketControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
+    @MockBean
+    private TicketNotifierProducer ticketNotifierProducer;
 
     @Test
     public void mustSaveATicket(){
@@ -45,6 +53,7 @@ public class TicketControllerTest {
         assertThat(body.getDestinyCity()).isEqualTo(ticket.getDestinyCity());
         assertThat(body.getArriveTime()).isEqualTo(ticket.getArriveTime());
         assertThat(body.getDepartureTime()).isEqualTo(ticket.getDepartureTime());
+        verify(ticketNotifierProducer, atLeastOnce()).notify(any(Ticket.class));
     }
 
     @Test

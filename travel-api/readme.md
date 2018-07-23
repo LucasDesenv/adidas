@@ -37,6 +37,23 @@ to search for the ways from a city to another one.
 
 * 4 - It will be available at `http://localhost:7111/swagger-ui.html`
 
+
+**CURLS**
+
+* Create 
+    ```
+    curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ 
+       "arriveTime": "12:00",  
+       "departureTime": "17:00",  
+       "destinyCity": "Teste",  
+       "originCity": "Teste2"  
+     }' 'http://localhost:7111/v1/api/ticket'
+    ```
+* Search
+    ```
+    curl -X GET --header 'Accept: application/json' 'http://localhost:7111/v1/api/ticket/search?originCity=Criciuma&destinyCity=Florianopolis'
+    ```
+
 **TODO in future (things to get better)**
 * Change Rabbit to Kafka for **topic** usage to notify.
 * Change MongoDB to MongoDB + Elasticsearch (for searching).

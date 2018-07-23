@@ -3,5 +3,8 @@
 spring:
   application:
     name: travel-api
-server:
-  context-path: /travel
+ticket:
+  rabbit:
+    notifier:
+      queue-name: notifier
+      exchange-name: ticket_events
