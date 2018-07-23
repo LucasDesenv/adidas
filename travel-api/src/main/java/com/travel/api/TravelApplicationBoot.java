@@ -10,11 +10,14 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalTime;
+
 @SpringBootApplication
 @EnableSwagger2
 @EnableDiscoveryClient
 public class TravelApplicationBoot
 {
+
 
    public static void main(String[] args)
    {
@@ -23,7 +26,7 @@ public class TravelApplicationBoot
 
    @Bean
    public Docket api(){
-      return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+      return new Docket(DocumentationType.SWAGGER_2).directModelSubstitute(LocalTime.class, String.class).select().apis(RequestHandlerSelectors.any())
               .paths(PathSelectors.any()).build();
    }
 }
