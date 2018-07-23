@@ -41,6 +41,7 @@ to search for the ways from a city to another one.
 * Change Rabbit to Kafka for **topic** usage to notify.
 * Change MongoDB to MongoDB + Elasticsearch (for searching).
 * Add oAuth2 for security.
+* Add config-server and config-repo.
 
 
 **REFERENCES**

@@ -1,5 +1,10 @@
 #spring boot properties
 #Thu Jul 19 21:26:09 EDT 2018
+ticket:
+  rabbit:
+    notifier:
+      queue-name: notifier
+      exchange-name: ticket_events
 spring:
   application:
     name: travel-api
