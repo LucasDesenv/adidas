@@ -1,5 +1,10 @@
 #spring boot properties
 #Fri Jul 20 18:59:14 EDT 2018
+ticket:
+  rabbit:
+    notifier:
+      queue-name: notifier
+      exchange-name: ticket_events
 server:
   port: 8087
 spring:

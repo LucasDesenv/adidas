@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class TicketQueueConfiguration {
-    final String queueNotifierName;
-    final String exchangeName;
+    private final String queueNotifierName;
+    private final String exchangeName;
 
     TicketQueueConfiguration(@Value("${ticket.rabbit.notifier.queue-name}") String queue,
                              @Value("${ticket.rabbit.notifier.exchange-name}") String exchange){

@@ -5,6 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,22 +14,28 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class TicketQueueConfiguration {
-    static final String QUEUE_NOTIFIER = "notifier";
-    static final String EXCHANGE = "ticket_events";
+    final String queueNotifierName;
+    final String exchangeName;
+
+    TicketQueueConfiguration(@Value("${ticket.rabbit.notifier.queue-name}") String queue,
+                             @Value("${ticket.rabbit.notifier.exchange-name}") String exchange){
+        queueNotifierName = queue;
+        exchangeName = exchange;
+    }
 
     @Bean
     Queue notifier(){
-        return new Queue(QUEUE_NOTIFIER, true);
+        return new Queue(queueNotifierName, true);
     }
 
     @Bean
     DirectExchange directExchange(){
-        return new DirectExchange(EXCHANGE, true, false);
+        return new DirectExchange(exchangeName, true, false);
     }
 
     @Bean
     Binding bindingPeopleRead(@Qualifier("notifier") Queue queue, DirectExchange directExchange){
-        return BindingBuilder.bind(queue).to(directExchange).with(QUEUE_NOTIFIER);
+        return BindingBuilder.bind(queue).to(directExchange).with(queueNotifierName);
     }
 
 }

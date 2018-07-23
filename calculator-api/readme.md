@@ -37,6 +37,12 @@ to calculate the shortest way from a city to another one.
 * 4 - It will be available at `http://localhost:8087/swagger-ui.html`
 
 
+**CURLS**
+
+* Calculate shortest way
+    ```
+    curl -X GET --header 'Accept: application/json' 'http://localhost:8087/v1/api/calculator/shortest?fromCity=Criciuma&toCity=Sao%20Paulo'
+    ```
 
 **REFERENCES**
 

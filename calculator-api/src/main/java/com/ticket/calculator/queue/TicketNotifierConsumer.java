@@ -26,8 +26,8 @@ public class TicketNotifierConsumer {
 
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value="notifier",durable = "True"),
-                    exchange = @Exchange(value = "ticket_events", durable = "True")
+                    value = @Queue(value="${ticket.rabbit.notifier.queue-name}",durable = "True"),
+                    exchange = @Exchange(value = "${ticket.rabbit.notifier.exchange-name}", durable = "True")
             ))
     public void processMessage(org.springframework.amqp.core.Message message, @Payload String ticketJson){
         Ticket ticket = new Gson().fromJson(ticketJson, Ticket.class);
