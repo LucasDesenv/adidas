@@ -1,3 +1,3 @@
 # Microservice Architecture
 
-![alt test](microservices.png)
+![alt Architecture Diagram](microservices.png)
